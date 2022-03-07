@@ -52,7 +52,7 @@ const SkillTest = () => {
     React.useEffect(() => {
         setfinalScore(CurrScore);
       setprogress(finalPercentile);
-    }, [finalPercentile,finalScore]);
+    }, [CurrScore, finalPercentile,finalScore]);
 
     const data = {
         labels: ['Incorrect', 'Correct'],
@@ -301,7 +301,7 @@ const SkillTest = () => {
                         <div className='donut-chart'>
                             <div className='donut-heading'>Question Analysis <span className='donut-score'>{finalScore} / 15</span></div>
                             <div className='donut-subheading'><span className='bold-subheading'>You scored {finalScore} question correct out of 15. </span>However it still needs some improvements.</div>
-                            <div class="donut-merge">
+                            <div className="donut-merge">
                             <Doughnut className='donut-chart-graph' data={data} />
                             </div>
                         </div>
