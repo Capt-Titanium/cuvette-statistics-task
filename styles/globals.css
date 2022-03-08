@@ -426,3 +426,31 @@ line-height: 150%;
 letter-spacing: -0.02em;
 color: #566474;
 }
+
+.custom-tooltip{
+	background-color: black;
+	color: #EBF0F5;
+	padding: 10%;
+	border-radius: 10px;
+}
+.label {
+	font-family: DM Sans;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 23px;
+letter-spacing: -0.02em;
+
+color: #FFFFFF;
+}
+.desc {
+	font-family: DM Sans;
+font-style: normal;
+font-weight: normal;
+font-size: 14px;
+line-height: 18px;
+letter-spacing: -0.02em;
+
+color: rgba(255, 255, 255, 0.7);
+
+}

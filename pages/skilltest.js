@@ -10,6 +10,8 @@ import { Add} from '@mui/icons-material';
 import RemoveIcon from '@mui/icons-material/Remove';
 import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as TOoltip, Legend as LEgend, ResponsiveContainer } from 'recharts';
+
 import { 
     Chart as ChartJS, 
     ArcElement,
@@ -21,7 +23,7 @@ import {
     Tooltip,
     Legend,} from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
-import { Line } from 'react-chartjs-2';
+// import { Line } from 'react-chartjs-2';
 
   
   ChartJS.register(
@@ -50,9 +52,90 @@ const SkillTest = () => {
     const [progress,setprogress] = React.useState(0);
 
     React.useEffect(() => {
-        setfinalScore(CurrScore);
-      setprogress(finalPercentile);
-    }, [CurrScore, finalPercentile,finalScore]);
+		if(finalScore == 0)
+		{
+			setfinalScore(CurrScore);
+		}
+			setprogress(finalPercentile);
+    }, [finalPercentile,finalScore]);
+
+	const marks = {
+		name: finalPercentile,
+		pv: 4567,
+		amt: 2400,
+	};
+
+	const linedata = [
+		{
+		  name: 0,
+		  pv: 1,
+		  amt: 2400,
+		},
+		{
+			name: 10,
+			pv: 2345,
+			amt: 2210,
+		},
+		{
+		  name: 20,
+		  pv: 1398,
+		  amt: 2210,
+		},
+		{
+			name: 30,
+			pv: 1398,
+			amt: 2210,
+		},
+		{
+		  name: 40,
+		  pv: 3200,
+		  amt: 2290,
+		},
+		{
+		  name: 50,
+		  pv: 8900,
+		  amt: 2000,
+		},
+		{
+		  name: 60,
+		  pv: 4800,
+		  amt: 2181,
+		},
+		{
+		  name: 70,
+		  pv: 2400,
+		  amt: 2181,
+		},
+		{
+		  name: 80,
+		  pv: 1200,
+		  amt: 2181,
+		},
+		{
+		  name: 90,
+		  pv: 2300,
+		  amt: 2181,
+		},
+		{
+		  name: 100,
+		  pv: 1,
+		  amt: 2500,
+		},
+	  ];
+	
+	  const CustomTooltip = ({ active, payload, label }) => {
+		if (active && payload && payload.length && label == finalPercentile) {
+		  return (
+			<div className="custom-tooltip">
+			  <p className="label">{`${label} % Percentile`}</p>
+			  <p className="desc">Your Score</p>
+			</div>
+		  );
+		}
+	  
+		return null;
+	  };
+
 
     const data = {
         labels: ['Incorrect', 'Correct'],
@@ -73,18 +156,18 @@ const SkillTest = () => {
         ],
       };
 
-      const linedata = {
-                labels: ['0%', '20%', '40%', '60%', '80%', '100%'],
-                datasets: [
-                    {
-                    label: "First dataset",
-                    data: [33, 53, 85, 20, 44, 65],
-                    fill: true,
-                    backgroundColor: "rgba(75,192,192,0.2)",
-                    borderColor: "rgba(75,192,192,1)"
-                    },
-                ],
-            };
+    //   const linedata = {
+    //             labels: ['0%', '20%', '40%', '60%', '80%', '100%'],
+    //             datasets: [
+    //                 {
+    //                 label: "First dataset",
+    //                 data: [33, 53, 85, 20, 44, 65],
+    //                 fill: true,
+    //                 backgroundColor: "rgba(75,192,192,0.2)",
+    //                 borderColor: "rgba(75,192,192,1)"
+    //                 },
+    //             ],
+    //         };
     
     
     const handleClickOpen = () => {
@@ -158,9 +241,9 @@ const SkillTest = () => {
                                             </Grid>
                                             <Grid item xs={3}>
                                             <div className='range-form'>
-                                            <Button className='minus' onClick={ ()=>{if(Percentile !== 0) setPercentile(Percentile-1) }}><RemoveIcon /></Button>
+                                            <Button className='minus' onClick={ ()=>{if(Percentile !== 0) setPercentile(Percentile-10) }}><RemoveIcon /></Button>
                                             <span className='field-num'> {Percentile} </span>
-                                                <Button className='plus' onClick={ ()=>{if(Percentile !== 100) setPercentile(Percentile+1) }}><Add /></Button>
+                                                <Button className='plus' onClick={ ()=>{if(Percentile !== 100) setPercentile(Percentile+10) }}><Add /></Button>
                                                 
                                             </div>
                                             </Grid>
@@ -229,7 +312,29 @@ const SkillTest = () => {
                         <div className='comparison-section'>
                             <div className='comparison-heading'>Comparison Graph</div>
                             <div className='comparison-subheading'><span className='comparison-bold-subheading'>You scored {finalPercentile} % percentile </span> which is {finalPercentile > 50 ? 'higher' : 'lower'} than the average percentile 50% of all the engineers who took the assessment. </div>
-                            <div className='comparison-graph'><Line data={linedata} /> </div>
+                            <div className='comparison-graph'>
+							<ResponsiveContainer width="95%" height={400}>
+								<LineChart
+								className='line-chart'
+								width={1000}
+								height={1000}
+								data={linedata}
+								margin={{
+									top: 5,
+									right: 30,
+									left: 20,
+									bottom: 5,
+								}}
+								>
+								<CartesianGrid strokeDasharray="3 3" />
+								<XAxis dataKey="name" />
+								<YAxis />
+								<TOoltip  content={<CustomTooltip />} />
+								<LEgend />
+								<Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
+								</LineChart>
+								</ResponsiveContainer>
+							</div>
                         </div>
                     </Grid>
                     <Grid className='right-stats' item xs={4}>
